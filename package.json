@@ -20,5 +20,16 @@
   ],
   "peerDependencies": {
     "@opencode-ai/plugin": ">=1.0.0"
-  }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amedve/opencode-terminal-bell-notifier.git"
+  },
+  "bugs": {
+    "url": "https://github.com/amedve/opencode-terminal-bell-notifier/issues"
+  },
+  "homepage": "https://github.com/amedve/opencode-terminal-bell-notifier#readme"
 }
