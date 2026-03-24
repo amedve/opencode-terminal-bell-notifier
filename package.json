@@ -1,6 +1,6 @@
 {
   "name": "opencode-terminal-bell-notifier",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Zero-dependency OpenCode plugin that sends desktop notifications via OSC 9 terminal escape sequences",
   "author": "Max Medve",
   "license": "MIT",

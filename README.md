@@ -10,7 +10,7 @@ Add to your `opencode.json`:
 
 ```json
 {
-  "plugin": ["opencode-terminal-bell-notifier"]
+  "plugin": ["opencode-terminal-bell-notifier@latest"]
 }
 ```
 

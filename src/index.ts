@@ -13,8 +13,8 @@
  */
 import type { Plugin } from "@opencode-ai/plugin";
 
-const notify = async (message: string) => {
-  await Bun.write(Bun.stdout, `\x1b]9;${message}\x07`);
+const notify = (message: string) => {
+  process.stdout.write(`\x1b]9;${message}\x07`);
 };
 
 export const TerminalBellNotifierPlugin: Plugin = async ({ client }) => {
