@@ -2,15 +2,17 @@
 
 Zero-dependency [OpenCode](https://opencode.ai) plugin that sends desktop notifications using [OSC 9](https://ghostty.org/docs/vt/osc/9) terminal escape sequences.
 
-No `osascript`, no `notify-send`, no external binaries, no npm dependencies. Just a single escape sequence written to stdout that your terminal emulator interprets as a notification.
+No `osascript`, no `notify-send`, no npm dependencies. Just a single escape sequence written to the terminal that your terminal emulator interprets as a notification.
+
+> **Compatibility:** this release targets the OpenCode **2.x** plugin API (`@opencode/plugin`). OpenCode 1.x is not supported by this version.
 
 ## Install
 
-Add to your `opencode.json`:
+Add to your `opencode.json` (OpenCode 2.x):
 
 ```json
 {
-  "plugin": ["opencode-terminal-bell-notifier@latest"]
+  "plugins": ["opencode-terminal-bell-notifier@latest"]
 }
 ```
 
@@ -20,18 +22,20 @@ Restart OpenCode.
 
 Sends a terminal notification when:
 
-- The agent finishes a task
-- The agent asks a question
-- Permission is requested
-- An error occurs
+- The agent finishes a task (`session.execution.succeeded`, with `session.idle` as a fallback)
+- The agent asks a question (`form.created`)
+- Permission is requested (`permission.asked`)
+- An error occurs (`session.execution.failed`)
 
 ## How it works
 
-The plugin writes an OSC 9 escape sequence directly to stdout:
+The plugin writes an OSC 9 escape sequence:
 
 ```
 \x1b]9;<message>\x07
 ```
+
+Under OpenCode 2, plugins run inside the background service, whose stdout is not a terminal (it is `/dev/null`), so writing to `process.stdout` is discarded. The plugin instead locates the pty held by the OpenCode TUI process and writes the sequence there.
 
 Terminal emulators that support OSC 9 (Ghostty, iTerm2, kitty, foot, Windows Terminal, Warp) display this as a native desktop notification. Terminals without OSC 9 support still fire the trailing BEL byte (`\x07`) as an audible or visual bell.
 
@@ -39,8 +43,8 @@ Terminal emulators that support OSC 9 (Ghostty, iTerm2, kitty, foot, Windows Ter
 
 Most notification plugins shell out to platform-specific tools (`osascript` on macOS, `notify-send` on Linux) or pull in npm packages like `node-notifier`. This plugin does none of that:
 
-- No runtime dependencies
-- No child processes
+- No npm runtime dependencies
+- No platform-specific notification binaries (a single `ps` call is used only to locate the TUI pty on OpenCode 2)
 - No platform detection
 - No permission prompts except native OS notifications permission
 - Works on any OS as long as the terminal supports OSC 9 or BEL
