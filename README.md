@@ -35,6 +35,8 @@ The plugin writes an OSC 9 escape sequence directly to stdout:
 
 Terminal emulators that support OSC 9 (Ghostty, iTerm2, kitty, foot, Windows Terminal, Warp) display this as a native desktop notification. Terminals without OSC 9 support still fire the trailing BEL byte (`\x07`) as an audible or visual bell.
 
+Notifications are only written when stdout is a terminal. When OpenCode runs with piped stdout, for example as a subprocess driven by an ACP client, the plugin stays silent so the escape sequence never corrupts the output stream.
+
 ## How it differs from other notification plugins
 
 Most notification plugins shell out to platform-specific tools (`osascript` on macOS, `notify-send` on Linux) or pull in npm packages like `node-notifier`. This plugin does none of that:
